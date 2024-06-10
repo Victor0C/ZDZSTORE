@@ -43,6 +43,42 @@ namespace ZDZSTORE.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ZDZSTORE.Sale.Model.ItemModel", b =>
+                {
+                    b.Property<string>("id")
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
+
+                    b.Property<int>("amount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<long>("price")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("productID")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
+
+                    b.Property<string>("saleID")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("productID");
+
+                    b.HasIndex("saleID");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("ZDZSTORE.Sale.Model.SaleModel", b =>
                 {
                     b.Property<string>("id")
@@ -92,6 +128,25 @@ namespace ZDZSTORE.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ZDZSTORE.Sale.Model.ItemModel", b =>
+                {
+                    b.HasOne("ZDZSTORE.Product.Model.ProductModel", "product")
+                        .WithMany("items")
+                        .HasForeignKey("productID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ZDZSTORE.Sale.Model.SaleModel", "sale")
+                        .WithMany("items")
+                        .HasForeignKey("saleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
+
+                    b.Navigation("sale");
+                });
+
             modelBuilder.Entity("ZDZSTORE.Sale.Model.SaleModel", b =>
                 {
                     b.HasOne("ZDZSTORE.User.Model.UserModel", "user")
@@ -101,6 +156,16 @@ namespace ZDZSTORE.Migrations
                         .IsRequired();
 
                     b.Navigation("user");
+                });
+
+            modelBuilder.Entity("ZDZSTORE.Product.Model.ProductModel", b =>
+                {
+                    b.Navigation("items");
+                });
+
+            modelBuilder.Entity("ZDZSTORE.Sale.Model.SaleModel", b =>
+                {
+                    b.Navigation("items");
                 });
 
             modelBuilder.Entity("ZDZSTORE.User.Model.UserModel", b =>

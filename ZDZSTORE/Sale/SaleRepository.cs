@@ -15,14 +15,18 @@ namespace ZDZSTORE.Sale
 
         public async Task<SaleModel?> GetOne(string id)
         {
-            SaleModel? sale = await _context.Sales.FindAsync(id);
+            SaleModel? sale = await _context.Sales
+                .Include(s => s.items)
+                .FirstOrDefaultAsync(s => s.id == id);
 
             return sale;
         }
 
         public async Task<IEnumerable<SaleModel>> GetAll()
         {
-            IEnumerable<SaleModel> sale = await _context.Sales.ToListAsync();
+            IEnumerable<SaleModel> sale = await _context.Sales
+                .Include(s => s.items)
+                .ToListAsync();
 
             return sale;
         }

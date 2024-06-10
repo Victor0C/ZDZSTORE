@@ -1,5 +1,6 @@
 ﻿using NanoidDotNet;
 using System.ComponentModel.DataAnnotations;
+using ZDZSTORE.Sale.Model;
 
 namespace ZDZSTORE.Product.Model
 {
@@ -19,5 +20,7 @@ namespace ZDZSTORE.Product.Model
 
         [Required]
         public int price { get; set; }
+
+        public virtual ICollection<ItemModel> items { get; set; } = new List<ItemModel>();
     }
 }

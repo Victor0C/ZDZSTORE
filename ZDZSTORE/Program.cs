@@ -15,6 +15,7 @@ builder.Services.AddDbContext<DataContext>(
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<ProductRepository>();
 builder.Services.AddTransient<SaleRepository>();
+builder.Services.AddTransient<SaleService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IPasswordHasher<UserModel>, PasswordHasher<UserModel>>();
