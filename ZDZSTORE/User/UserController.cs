@@ -23,23 +23,23 @@ namespace ZDZSTORE.User
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseUser>> GetOne(string id)
+        public async Task<ActionResult<ResponseUserDTO>> GetOne(string id)
         {
             UserModel? userModel = await _userRepository.GetOne(id);
 
             if (userModel == null) { return NotFound(); };
 
-            ResponseUser responseUser = _mapper.Map<ResponseUser>(userModel);
+            ResponseUserDTO responseUser = _mapper.Map<ResponseUserDTO>(userModel);
 
             return Ok(responseUser);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResponseUser>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ResponseUserDTO>>> GetAll()
         {
             IEnumerable<UserModel> users = await _userRepository.GetAll();
 
-            IEnumerable<ResponseUser> responseUser = _mapper.Map<List<ResponseUser>>(users);
+            IEnumerable<ResponseUserDTO> responseUser = _mapper.Map<List<ResponseUserDTO>>(users);
 
             return Ok(responseUser);
         }
@@ -47,7 +47,7 @@ namespace ZDZSTORE.User
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<ResponseUser>> CreateOne([FromBody] CreateUserDTO userDTO)
+        public async Task<ActionResult<ResponseUserDTO>> CreateOne([FromBody] CreateUserDTO userDTO)
         {
             UserModel userModel = _mapper.Map<UserModel>(userDTO);
 
@@ -55,13 +55,13 @@ namespace ZDZSTORE.User
 
             UserModel user = await _userRepository.CreateOne(userModel);
 
-            ResponseUser responseUser = _mapper.Map<ResponseUser>(user);
+            ResponseUserDTO responseUser = _mapper.Map<ResponseUserDTO>(user);
 
             return CreatedAtAction(nameof(GetOne), new { id = responseUser.id }, responseUser);
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ResponseUser>> UpdateOne(string id, JsonPatchDocument<UpdateUserDTO> patch)
+        public async Task<ActionResult<ResponseUserDTO>> UpdateOne(string id, JsonPatchDocument<UpdateUserDTO> patch)
         {
             UserModel? user = await _userRepository.GetOne(id);
 
@@ -84,7 +84,7 @@ namespace ZDZSTORE.User
             _mapper.Map(userDTO, user);
             await _userRepository.Update();
 
-            ResponseUser responseUser = _mapper.Map<ResponseUser>(user);
+            ResponseUserDTO responseUser = _mapper.Map<ResponseUserDTO>(user);
 
             return Ok(responseUser);
         }

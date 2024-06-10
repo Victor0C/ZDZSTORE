@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ZDZSTORE.Product.DTO
 {
-    public class ResponseProduct
+    public class ResponseProductDTO
     {
         public string id { get; set; } 
 

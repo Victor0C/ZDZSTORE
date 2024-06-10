@@ -1,5 +1,6 @@
 ﻿using NanoidDotNet;
 using System.ComponentModel.DataAnnotations;
+using ZDZSTORE.Sale.Model;
 
 namespace ZDZSTORE.User.Model
 {
@@ -20,5 +21,7 @@ namespace ZDZSTORE.User.Model
 
         [Required]
         public string password { get; set; }
+
+        public virtual ICollection<SaleModel> sales { get; set; }
     }
 }

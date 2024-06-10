@@ -20,42 +20,42 @@ namespace ZDZSTORE.Product
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResponseProduct>> GetOne(string id)
+        public async Task<ActionResult<ResponseProductDTO>> GetOne(string id)
         {
             ProductModel? productModel = await _productRepository.GetOne(id);
 
             if (productModel == null) { return NotFound(); };
 
-            ResponseProduct responseProduct = _mapper.Map<ResponseProduct>(productModel);
+            ResponseProductDTO responseProduct = _mapper.Map<ResponseProductDTO>(productModel);
 
             return Ok(responseProduct);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResponseProduct>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ResponseProductDTO>>> GetAll()
         {
             IEnumerable<ProductModel> products = await _productRepository.GetAll();
 
-            IEnumerable<ResponseProduct> responseProducts = _mapper.Map<List<ResponseProduct>>(products);
+            IEnumerable<ResponseProductDTO> responseProducts = _mapper.Map<List<ResponseProductDTO>>(products);
 
             return Ok(responseProducts);
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<ResponseProduct>> CreateOne([FromBody] CreateProductDTO productDTO)
+        public async Task<ActionResult<ResponseProductDTO>> CreateOne([FromBody] CreateProductDTO productDTO)
         {
             ProductModel productModel = _mapper.Map<ProductModel>(productDTO);
 
             ProductModel product = await _productRepository.CreateOne(productModel);
 
-            ResponseProduct responseProduct = _mapper.Map<ResponseProduct>(product);
+            ResponseProductDTO responseProduct = _mapper.Map<ResponseProductDTO>(product);
 
             return CreatedAtAction(nameof(GetOne), new { id = responseProduct.id }, responseProduct);
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ResponseProduct>> UpdateOne(string id, JsonPatchDocument<UpdateProductDTO> patch)
+        public async Task<ActionResult<ResponseProductDTO>> UpdateOne(string id, JsonPatchDocument<UpdateProductDTO> patch)
         {
             ProductModel? product = await _productRepository.GetOne(id);
 
@@ -73,7 +73,7 @@ namespace ZDZSTORE.Product
             _mapper.Map(productDTO, product);
             await _productRepository.Update();
 
-            ResponseProduct responseProduct = _mapper.Map<ResponseProduct>(product);
+            ResponseProductDTO responseProduct = _mapper.Map<ResponseProductDTO>(product);
 
             return Ok(responseProduct);
         }
