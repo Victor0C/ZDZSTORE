@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ZDZSTORE.User.DTO;
@@ -12,11 +13,13 @@ namespace ZDZSTORE.User
     {
         private UserRepository _userRepository;
         private IMapper _mapper;
+        private readonly IPasswordHasher<UserModel> _passwordHasher;
 
-        public UserController(UserRepository userRepository, IMapper mapper)
+        public UserController(UserRepository userRepository, IMapper mapper, IPasswordHasher<UserModel> passwordHasher)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet("{id}")]
@@ -43,9 +46,12 @@ namespace ZDZSTORE.User
 
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<ResponseUser>> CreateOne([FromBody] CreateUserDTO userDTO)
         {
             UserModel userModel = _mapper.Map<UserModel>(userDTO);
+
+            userModel.password = _passwordHasher.HashPassword(userModel, userModel.password);
 
             UserModel user = await _userRepository.CreateOne(userModel);
 
@@ -55,7 +61,6 @@ namespace ZDZSTORE.User
         }
 
         [HttpPatch("{id}")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<ResponseUser>> UpdateOne(string id, JsonPatchDocument<UpdateUserDTO> patch)
         {
             UserModel? user = await _userRepository.GetOne(id);
@@ -69,6 +74,11 @@ namespace ZDZSTORE.User
             if (!TryValidateModel(userDTO))
             {
                 return ValidationProblem(ModelState);
+            }
+
+            if (patch.Operations.Any(op => op.path == "/password"))
+            {
+                userDTO.password = _passwordHasher.HashPassword(user, userDTO.password);
             }
 
             _mapper.Map(userDTO, user);
