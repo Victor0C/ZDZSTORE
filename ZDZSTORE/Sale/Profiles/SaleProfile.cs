@@ -9,9 +9,14 @@ namespace ZDZSTORE.Sale.Profiles
         public SaleProfile()
         {
             CreateMap<CreateSaleDTO, SaleModel>();
-            CreateMap<SaleModel, ResponseSaleDTO>();
-            CreateMap<SaleModel, UpdateSaleDTO>();
-            CreateMap<UpdateSaleDTO, SaleModel>();
+            CreateMap<SaleModel, ResponseSaleWithItemsDTO>()
+                .ForMember(responseSale => responseSale.items, options => options.MapFrom(saleModel => saleModel.items));
+
+            CreateMap<SaleModel, ResponseSaleDTO>()
+                 .ForMember(dest => dest.amountItems, opt => opt.MapFrom(src => src.items.Sum(item => item.amount)));
+
+            CreateMap<CreateItemDTO, ItemModel>();
+            CreateMap<ItemModel, ResponseItemDTO>();
         }
     }
 }

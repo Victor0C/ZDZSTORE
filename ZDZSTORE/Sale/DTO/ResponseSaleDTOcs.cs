@@ -9,5 +9,7 @@
         public long customerCPF { get; set; }
 
         public long price { get; set; }
+
+        public int amountItems { get; set; }
     }
 }

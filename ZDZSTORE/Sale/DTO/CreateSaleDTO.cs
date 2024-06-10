@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ZDZSTORE.Validations;
 
 namespace ZDZSTORE.Sale.DTO
 {
@@ -12,7 +13,8 @@ namespace ZDZSTORE.Sale.DTO
         [Range(10000000000, 99999999999, ErrorMessage = "The customerCPF field must have exactly 11 digits.")]
         public long customerCPF { get; set; }
 
-        [Required(ErrorMessage = "The price field is required.")]
-        public long price { get; set; }
+        [Required(ErrorMessage = "The items collection is required and cannot be empty.")]
+        [NonEmptyCollection(ErrorMessage = "The list of items cannot be empty.")]
+        public ICollection<CreateItemDTO> items { get; set; }
     }
 }

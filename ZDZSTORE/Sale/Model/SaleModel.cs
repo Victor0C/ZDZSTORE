@@ -25,5 +25,7 @@ namespace ZDZSTORE.Sale.Model
 
         [Required]
         public long price { get; set; }
+
+        public virtual ICollection<ItemModel> items { get; set; } = new List<ItemModel>();
     }
 }
