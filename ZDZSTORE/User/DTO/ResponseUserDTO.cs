@@ -2,7 +2,7 @@
 
 namespace ZDZSTORE.User.DTO
 {
-    public class ResponseUser
+    public class ResponseUserDTO
     {
         public string id {  get; set; }
         public string name { get; set; }

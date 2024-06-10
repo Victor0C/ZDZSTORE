@@ -9,7 +9,7 @@ namespace ZDZSTORE.Product.Profiles
         public ProductProfile()
         {
             CreateMap<CreateProductDTO, ProductModel>();
-            CreateMap<ProductModel, ResponseProduct>();
+            CreateMap<ProductModel, ResponseProductDTO>();
             CreateMap<ProductModel, UpdateProductDTO>();
             CreateMap<UpdateProductDTO, ProductModel>();
         }

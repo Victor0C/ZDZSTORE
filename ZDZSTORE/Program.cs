@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZDZSTORE.database;
 using ZDZSTORE.Product;
+using ZDZSTORE.Sale;
 using ZDZSTORE.User;
 using ZDZSTORE.User.Model;
 
@@ -13,6 +14,7 @@ builder.Services.AddDbContext<DataContext>(
 
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<ProductRepository>();
+builder.Services.AddTransient<SaleRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IPasswordHasher<UserModel>, PasswordHasher<UserModel>>();

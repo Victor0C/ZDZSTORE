@@ -9,7 +9,7 @@ namespace ZDZSTORE.User.Profiles
         public UserProfile()
         {
             CreateMap<CreateUserDTO, UserModel>();
-            CreateMap<UserModel, ResponseUser>();
+            CreateMap<UserModel, ResponseUserDTO>();
             CreateMap<UserModel,UpdateUserDTO>();
             CreateMap<UpdateUserDTO, UserModel>();
         }
