@@ -19,8 +19,6 @@ namespace ZDZSTORE.User.Model
         public string email { get; set; }
 
         [Required]
-        [MaxLength(21)]
-        [MinLength(8)]
         public string password { get; set; }
     }
 }
