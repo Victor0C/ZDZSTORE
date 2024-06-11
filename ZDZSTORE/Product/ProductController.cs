@@ -56,21 +56,12 @@ namespace ZDZSTORE.Product
             return CreatedAtAction(nameof(GetOne), new { id = responseProduct.id }, responseProduct);
         }
 
-        [HttpPatch("{id}")]
-        public async Task<ActionResult<ResponseProductDTO>> UpdateOne(string id, JsonPatchDocument<UpdateProductDTO> patch)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ResponseProductDTO>> UpdateOne(string id, UpdateProductDTO productDTO)
         {
             ProductModel? product = await _productRepository.GetOne(id);
 
             if (product == null) return NotFound();
-
-            UpdateProductDTO productDTO = _mapper.Map<UpdateProductDTO>(product);
-
-            patch.ApplyTo(productDTO, ModelState);
-
-            if (!TryValidateModel(productDTO))
-            {
-                return ValidationProblem(ModelState);
-            }
 
             _mapper.Map(productDTO, product);
             await _productRepository.Update();

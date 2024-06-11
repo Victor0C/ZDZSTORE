@@ -10,8 +10,9 @@ namespace ZDZSTORE.User.Profiles
         {
             CreateMap<CreateUserDTO, UserModel>();
             CreateMap<UserModel, ResponseUserDTO>();
-            CreateMap<UserModel,UpdateUserDTO>();
-            CreateMap<UpdateUserDTO, UserModel>();
+            CreateMap<UserModel, UpdateUserDTO>();
+            CreateMap<UpdateUserDTO, UserModel>()
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

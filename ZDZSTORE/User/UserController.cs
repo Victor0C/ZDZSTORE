@@ -63,7 +63,7 @@ namespace ZDZSTORE.User
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ResponseUserDTO>> UpdateOne(string id, JsonPatchDocument<UpdateUserDTO> patch)
+        public async Task<ActionResult<ResponseUserDTO>> UpdateOnePath(string id, JsonPatchDocument<UpdateUserDTO> patch)
         {
             UserModel? user = await _userRepository.GetOne(id);
 
@@ -79,6 +79,26 @@ namespace ZDZSTORE.User
             }
 
             if (patch.Operations.Any(op => op.path == "/password"))
+            {
+                userDTO.password = _passwordHasher.HashPassword(user, userDTO.password);
+            }
+
+            _mapper.Map(userDTO, user);
+            await _userRepository.Update();
+
+            ResponseUserDTO responseUser = _mapper.Map<ResponseUserDTO>(user);
+
+            return Ok(responseUser);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ResponseUserDTO>> UpdateOnePut(string id, UpdateUserDTO userDTO)
+        {
+            UserModel? user = await _userRepository.GetOne(id);
+
+            if (user == null) return NotFound();
+
+            if (userDTO.password != null)
             {
                 userDTO.password = _passwordHasher.HashPassword(user, userDTO.password);
             }
