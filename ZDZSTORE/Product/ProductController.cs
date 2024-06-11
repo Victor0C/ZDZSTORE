@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ZDZSTORE.Product.DTO;
@@ -8,6 +9,7 @@ namespace ZDZSTORE.Product
 {
     [ApiController]
     [Route("products")]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private ProductRepository _productRepository;

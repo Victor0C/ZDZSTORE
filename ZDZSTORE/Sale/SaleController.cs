@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZDZSTORE.Product;
 using ZDZSTORE.Sale.DTO;
@@ -10,6 +11,7 @@ namespace ZDZSTORE.Sale
 {
     [ApiController]
     [Route("sales")]
+    [Authorize]
     public class SaleController : ControllerBase
     {
         private SaleRepository _saleRepository;
