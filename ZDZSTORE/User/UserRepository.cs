@@ -18,6 +18,13 @@ namespace ZDZSTORE.User
             UserModel? userModel = await _context.Users.FindAsync(id);
 
             return userModel;
+        }  
+        
+        public async Task<UserModel?> GetOneByEmail(string email)
+        {
+            UserModel? userModel = await _context.Users.FirstOrDefaultAsync(user => user.email == email);
+
+            return userModel;
         }
 
         public async Task<IEnumerable<UserModel>> GetAll()
